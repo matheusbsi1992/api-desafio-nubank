@@ -122,6 +122,7 @@ volumes:
 
 ### 📂 Estrutura do Projeto
 
+```
 src
  ├── main
  │   ├── java/com/br/nubank
@@ -138,7 +139,9 @@ src
  │   └── resources
  │       ├── db/migration # Scripts Flyway
  │       ├── application.yaml # Configurações de Servidor Web e Banco de Dados Local
- │       └── ...
  └── test
-     └── java/com/br/nubank # Testes unitários e de integração
-
+     └── java/com/br/nubank/teste # Testes unitários e de integração
+         └── repository       # SpringBootTest
+     └── resources
+         └── application-test.properties # Configurações de Banco de Dados em memória
+```
