@@ -129,7 +129,8 @@ src
  │   │   ├── controller   # Endpoints REST
  │   │   ├── dto          # Objetos de transferência
  │   │   ├── exceptions   # Exceções de status code e bindinresult
- │   │   ├── execucao     # Execução do projetos
+ │   │   ├── execucao     # Execução do projeto
+ │   │   ├── mapper       # Mapeamento
  │   │   ├── service      # Regras de negócio
  │   │   ├── repository   # Integração com JPA
  │   │   ├── model        # Entidades JPA
