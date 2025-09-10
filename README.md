@@ -130,11 +130,11 @@ src
  │   │   ├── dto          # Objetos de transferência
  │   │   ├── exceptions   # Exceções de status code e bindinresult
  │   │   ├── execucao     # Execução do projeto
- │   │   ├── mapper       # Mapeamento
- │   │   ├── service      # Regras de negócio
+ │   │   ├── mapper       # Mapeamento (MapStruct)
+ │   │   ├── model        # Entidades
  │   │   ├── repository   # Integração com JPA
- │   │   ├── model        # Entidades JPA
- │   │   └── mapper       # MapStruct
+ │   │   ├── service      # Regras de negócio
+ │   │   └── validacao    # Validacoes de error
  │   └── resources
  │       ├── db/migration # Scripts Flyway
  │       ├── application.yaml # Configurações de Servidor Web e Banco de Dados Local
