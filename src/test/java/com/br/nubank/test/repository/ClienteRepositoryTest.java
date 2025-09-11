@@ -70,7 +70,6 @@ public class ClienteRepositoryTest {
         Long idUsuario = 1L;
 
         List<Cliente> clienteDTOList = clienteRepository.listarContatoPorCadaCliente(idUsuario);
-
         Assertions.assertNotNull(clienteDTOList.size() > 0);
         Assertions.assertTrue(!clienteDTOList.isEmpty());
         assertThat(!clienteDTOList.isEmpty()).isTrue();
