@@ -62,8 +62,6 @@ public interface ClienteContatoMapeada {
                 stream().
                 map(this::contatoParaContatoDTO).
                 toList();
-                //collect(Collectors.toList());
-        //List.of(mapContatoParaContatoDTO(contato));
     }
 
     // Converte uma lista de ContatoDTO para um único Contato (pega o primeiro item da lista)
@@ -76,9 +74,6 @@ public interface ClienteContatoMapeada {
                 stream().
                 map(this::contatoDTOParaContato).
                 toList();
-        //return mapContatoDTOParaContato(contatoDTOS.get(0));
     }
 
-    // Lista de clientes
-    //List<ClienteDTO> toDTOList(List<Cliente> clientes);
 }
