@@ -74,7 +74,6 @@ public interface ClienteContatoMapeada {
                 stream().
                 map(this::contatoDTOParaContato).
                 toList();
-        //return mapContatoDTOParaContato(contatoDTOS.get(0));
     }
 
 }
