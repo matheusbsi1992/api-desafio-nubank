@@ -116,7 +116,7 @@ volumes:
 
 ### 📑 Documentação da API
 
-``` Acesse a documentação interativa via Swagger: http://localhost:9293/swagger-ui.html ```
+``` Acesse a documentação interativa via Swagger: http://localhost:9293/swagger-ui/index.html ```
 
 ---
 
