@@ -172,7 +172,6 @@ public class ClienteDTO {
 
     public static ClienteDTO clienteParaClienteDTO(Cliente cliente) {
         ClienteDTO clienteDTO = new ClienteDTO();
-
         clienteDTO.setIdCliente(cliente.getId_cliente());
         clienteDTO.setNomeCliente(cliente.getNome_cliente());
         clienteDTO.setDataNascimentoCliente(cliente.getData_nascimento_cliente());
