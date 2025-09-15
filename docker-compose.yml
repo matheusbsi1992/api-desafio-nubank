@@ -1,6 +1,18 @@
 #version: "3.9"
 
 services:
+  # Cache
+  redis:
+    image:
+      redis:8.2.1
+    container_name: api-cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   # DB PostgreSQL
   postgres:
     image:
@@ -29,6 +41,7 @@ services:
     depends_on:
       # Dependência do DB criada anteriormente
       - postgres
+      # O desafio nao pedi o redis como alto dependencia - redis
       #condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/api-nubank-desafio
