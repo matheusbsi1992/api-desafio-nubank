@@ -75,9 +75,25 @@ spring.flyway.enabled=false
 ### Docker Compose (docker-compose.yaml)
 
 ```yaml
+#version: "3.9"
+
 services:
+  # Cache
+  redis:
+    image:
+      redis:8.2
+    container_name: api-cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  # DB PostgreSQL
   postgres:
-    image: postgres:15
+    image:
+      postgres:15
     container_name: api-nubank-base-de-dados
     restart: always
     environment:
@@ -86,6 +102,8 @@ services:
       POSTGRES_DB: api-nubank-desafio
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -93,22 +111,26 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
+  # Image da aplicação
   app:
     build: .
     container_name: api-nubank-desafio
     depends_on:
       - postgres
+      #- redis
+      #Dependência do DB criada anteriormente
+      #O desafio nao pedi o redis como alto dependencia - redis
+      #condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/api-nubank-desafio
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SERVER_PORT: 9393
+      #SPRING_FLYWAY_SCHEMAS: magalu
     ports:
       - "9393:9393"
-
-volumes:
-  postgres_data:
+volumes: # Adicione esta seção!
+  postgres_data:  # Declaração do volume
 ```
 ### Execução do Docker Compose
 
