@@ -137,6 +137,7 @@ volumes: # Adicione esta seção!
 ```
    docker-compose build --no-cache (Nova construção sem o cache anterior)
    docker compose up -d (Subir cada docker em background)
+   docker-compose logs app (Visualizar os logs do app)
 
 ```
 
