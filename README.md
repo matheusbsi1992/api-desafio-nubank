@@ -103,6 +103,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/api-nubank-desafio
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SERVER_PORT: 9393
     ports:
       - "9393:9393"
 
@@ -110,7 +111,12 @@ volumes:
   postgres_data:
 ```
 ### Execução do Docker Compose
-``` docker compose up -d ```
+
+```
+   docker-compose build --no-cache (Nova construção sem os caches anteriores)
+   docker compose up -d (Subir cada docker em background)
+
+```
 
 ---
 
