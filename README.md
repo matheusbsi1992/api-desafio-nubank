@@ -18,7 +18,8 @@ A aplicação segue boas práticas de arquitetura, utilizando **JPA/Hibernate**,
 - **Lombok** (redução de boilerplate)  
 - **Swagger / OpenAPI** (documentação e testes de endpoints)  
 - **JUnit / Spring Boot Test** (testes automatizados)  
-- **Docker & Docker Compose**  
+- **Docker & Docker Compose**
+- **Redis** (Cacheamento opcional do responsável ao projeto)
 
 ---
 
