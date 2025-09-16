@@ -3,13 +3,17 @@ package com.br.nubank.execucao;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.io.PrintStream;
 
 @SpringBootApplication/*(scanBasePackages = "com.br.nubank")*/
 @ComponentScan(basePackages = {"com.*"})
 @EntityScan(basePackages = {"com.*"})
 @EnableJpaRepositories(basePackages = {"com.*"}/*.br.nubank.repository*/)
+@EnableCaching
 public class ApiNubankDesafioApplication {
 
    /* public static Cliente clienteDTOParaCliente(ClienteDTO clienteDTO) {
@@ -36,7 +40,6 @@ public class ApiNubankDesafioApplication {
     }*/
 
     public static void main(String[] args) {
-
         SpringApplication.run(ApiNubankDesafioApplication.class, args);
     }
 

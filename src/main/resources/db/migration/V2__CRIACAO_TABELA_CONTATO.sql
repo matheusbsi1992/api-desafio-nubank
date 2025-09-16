@@ -1,6 +1,6 @@
 CREATE TABLE contato (
                 id_contato SERIAL NOT NULL,
-                id_cliente INTEGER,
+                id_cliente INTEGER NOT NULL,
                 endereco_contato VARCHAR,
                 numero_contato VARCHAR,
                 CONSTRAINT contato_pk PRIMARY KEY (id_contato)

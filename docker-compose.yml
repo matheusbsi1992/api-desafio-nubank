@@ -4,7 +4,7 @@ services:
   # Cache
   redis:
     image:
-      redis:8.2.1
+      redis:8.2
     container_name: api-cache
     ports:
       - "6379:6379"
@@ -39,17 +39,18 @@ services:
     build: .
     container_name: api-nubank-desafio
     depends_on:
-      # Dependência do DB criada anteriormente
       - postgres
-      # O desafio nao pedi o redis como alto dependencia - redis
+      #- redis
+      #Dependência do DB criada anteriormente
+      #O desafio nao pedi o redis como alto dependencia - redis
       #condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/api-nubank-desafio
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SERVER_PORT: 9393
       #SPRING_FLYWAY_SCHEMAS: magalu
     ports:
       - "9393:9393"
-
 volumes: # Adicione esta seção!
   postgres_data:  # Declaração do volume

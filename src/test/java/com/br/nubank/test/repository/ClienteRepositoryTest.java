@@ -79,9 +79,9 @@ public class ClienteRepositoryTest {
     @Test
     void returnAllClient() {
 
-        Page<Cliente> clienteDTOList = clienteRepository.listarContatosDeCadaCliente(PageRequest.of(1, 1));
+        Page/*List*/<Cliente> clienteDTOList = clienteRepository.listarContatosDeCadaCliente(PageRequest.of(1, 1));
 
-        Assertions.assertNotNull(clienteDTOList.getSize()/*.size()*/ > 0);
+        Assertions.assertNotNull(clienteDTOList.getSize());//*.size()*/ > 0);
         Assertions.assertTrue(!clienteDTOList.isEmpty());
         assertThat(!clienteDTOList.isEmpty()).isTrue();
     }

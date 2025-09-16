@@ -1,20 +1,20 @@
 package com.br.nubank.service;
 
 import com.br.nubank.dto.ClienteDTO;
-import com.br.nubank.dto.ContatoDTO;
 import com.br.nubank.mapper.ClienteContatoMapeada;
 import com.br.nubank.model.Contato;
 import com.br.nubank.repository.ClienteRepository;
 import com.br.nubank.repository.ContatoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /*
 import static com.br.nubank.dto.ClienteDTO.clienteDTOParaCliente;
@@ -47,9 +47,18 @@ public class ClienteService {
 
         var novoCliente = clienteContatoMapeada.clienteDTOParaCliente(clienteDTO);
 
+        /*if (novoCliente.getContatoList() != null) {
+            for (Contato contato : novoCliente.getContatoList()) {
+                contato.setCliente(novoCliente); // Define a referência
+            }
+        }*/
+        novoCliente
+                .getContatoList()
+                .forEach(contato -> contato.setCliente(novoCliente));
+
         var resultadoCliente = clienteRepository.save(novoCliente);
 
-      /*  List<Contato> contatoes = clienteDTO.
+       /*List<Contato> contatoes = clienteDTO.
                 getContatos().
                 stream().
                 map(contatoDTO -> {
@@ -154,7 +163,7 @@ public class ClienteService {
         return /*clienteParaClienteDTO*/clienteContatoMapeada.clienteParaClienteDTO(novocliente);
     }
 
-    public void deletarClienteEContato(Long idCliente){
+    public void deletarClienteEContato(Long idCliente) {
         var cliente = clienteRepository
                 .findById(idCliente)
                 .orElseThrow(() -> new EntityNotFoundException("CLIENTE NAO ENCONTRADO"));
@@ -163,6 +172,7 @@ public class ClienteService {
 
     }
 
+    @Cacheable(value = "listarClientesESeusContatos")
     public Page<ClienteDTO> listarClientesESeusContatos(Pageable pageable) {
         //stream().
         /*map(clienteDTO::clienteParaClienteDTO).
@@ -170,12 +180,19 @@ public class ClienteService {
         //.
         //collect(Collectors.toList());
 
-        return clienteRepository.
+        long tempoinicial = System.currentTimeMillis();
+        var retornaListaClienteContatos = clienteRepository.
                 listarContatosDeCadaCliente(pageable).
                 //stream().
                 /*map(clienteDTO::clienteParaClienteDTO).
                 collect(Collectors.toList());*/
                         map(clienteContatoMapeada::clienteParaClienteDTO);
+
+        long tempofinal = System.currentTimeMillis();
+
+        System.out.printf("Tempo decorrido : %.3f ms %n", (tempofinal - tempoinicial) / 1000d);
+
+        return retornaListaClienteContatos;
     }
 
     /*public List<ClienteDTO> listarContatosDeClientes() {
@@ -184,6 +201,7 @@ public class ClienteService {
         return clienteDTO.clienteParaClienteListDTOContato(resultadoNovo);
     }*/
 
+    @Cacheable(value = "listarContatosDeClientes")
     public List<ClienteDTO> listarContatosDeClientes(Long idCliente) {
 
         return clienteRepository.

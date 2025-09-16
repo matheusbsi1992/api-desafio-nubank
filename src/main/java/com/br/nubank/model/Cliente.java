@@ -3,6 +3,7 @@ package com.br.nubank.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity(name = "cliente")
 @Table(name = "cliente")
 @ToString(exclude = "contatoList")
-public class Cliente {
+public class Cliente implements Serializable {
 
     @Id
     @Column(name = "id_cliente", unique = true, nullable = false)

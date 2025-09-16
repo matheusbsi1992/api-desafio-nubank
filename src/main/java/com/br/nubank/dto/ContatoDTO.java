@@ -11,13 +11,14 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContatoDTO {
+public class ContatoDTO implements Serializable {
 
     private Long idContato;
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @Entity(name = "contato")
 @Table(name = "contato")
 @ToString(exclude = "cliente")
-public class Contato {
+public class Contato implements Serializable {
 
     @Id
     @Column(name = "id_contato", unique = true, nullable = false)
@@ -26,7 +27,7 @@ public class Contato {
     @Column(name = "numero_contato")
     private String numero_contato;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cliente")
     /*@JsonIgnore*/
     private Cliente cliente;
