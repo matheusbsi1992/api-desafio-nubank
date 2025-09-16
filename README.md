@@ -113,7 +113,7 @@ volumes:
 ### Execução do Docker Compose
 
 ```
-   docker-compose build --no-cache (Nova construção sem os caches anteriores)
+   docker-compose build --no-cache (Nova construção sem o cache anterior)
    docker compose up -d (Subir cada docker em background)
 
 ```
