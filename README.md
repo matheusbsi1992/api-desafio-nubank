@@ -19,7 +19,7 @@ A aplicação segue boas práticas de arquitetura, utilizando **JPA/Hibernate**,
 - **Swagger / OpenAPI** (documentação e testes de endpoints)  
 - **JUnit / Spring Boot Test** (testes automatizados)  
 - **Docker & Docker Compose**
-- **Redis** (Cacheamento opcional do responsável ao projeto)
+- **Redis** (cacheamento opcional do responsável ao projeto)
 
 ---
 
@@ -29,23 +29,31 @@ A aplicação segue boas práticas de arquitetura, utilizando **JPA/Hibernate**,
 ```yaml
 server:
   port: 9293
-
 spring:
+  cache:
+    type: redis
+  data:
+    redis:
+      host: redis
+      port: 6379
+  # profiles:
+  #  active: dev
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/api-nubank-desafio
-    username: postgres
-    password: postgres
-  jpa:
-    open-in-view: true
-    hibernate:
-      ddl-auto: update
-      show-sql: true
-      format-sql: true
+    url: jdbc:postgresql://localhost:5432/api-nubank-desafio #${SPRING_DATASOURCE_URL}
+    username: postgres #${SPRING_DATASOURCE_USERNAME}
+    password: postgres #${SPRING_DATASOURCE_PASSWORD}
+jpa:
+  open-in-view: true
+  hibernate:
+    ddl-auto: update
+    show-sql: true
+    format-sql: true
 flyway:
   create-schemas: true
   enabled: true
-  locations: classpath:db/migration
+  locations:
+    classpath: db/migration
   baseline-on-migrate: true
 spring-doc:
   pathsToMatch:
@@ -81,16 +89,24 @@ spring.flyway.enabled=false
 services:
   # Cache
   redis:
-    image:
-      redis:8.2
-    container_name: api-cache
-    ports:
-      - "6379:6379"
+    image: redis:8.2
+    container_name: redis
+    command: [
+      "redis-server",
+      "--save", "",
+      "--appendonly", "no",
+      "--databases", "1",
+      "--loglevel", "warning",
+      "--logfile", "/dev/null",
+      "--tcp-keepalive", "60"
+    ]
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
-      timeout: 5s
+      timeout: 3s
       retries: 5
+    ports:
+      - "6379:6379"
   # DB PostgreSQL
   postgres:
     image:
@@ -127,6 +143,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SERVER_PORT: 9393
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
       #SPRING_FLYWAY_SCHEMAS: magalu
     ports:
       - "9393:9393"
@@ -136,6 +154,7 @@ volumes: # Adicione esta seção!
 ### Execução do Docker Compose
 
 ```
+   docker-compose down (Remove cada IMAGE criada anteriormente)
    docker-compose build --no-cache (Nova construção sem o cache anterior)
    docker compose up -d (Subir cada docker em background)
    docker-compose logs app (Visualizar os logs do app)

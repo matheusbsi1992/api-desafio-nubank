@@ -2,15 +2,17 @@ package com.br.nubank.service;
 
 import com.br.nubank.dto.ClienteDTO;
 import com.br.nubank.mapper.ClienteContatoMapeada;
-import com.br.nubank.model.Contato;
 import com.br.nubank.repository.ClienteRepository;
 import com.br.nubank.repository.ContatoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,11 @@ public class ClienteService {
     private ClienteContatoMapeada clienteContatoMapeada;
 
     @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    private Integer contadorIdentificarCache = 1;
+
+    @Autowired
     public ClienteService(ClienteRepository clienteRepository, ContatoRepository contatoRepository, ClienteContatoMapeada clienteContatoMapeada) {
         Objects.requireNonNull(clienteRepository);
         Objects.requireNonNull(contatoRepository);
@@ -40,6 +47,7 @@ public class ClienteService {
         this.contatoRepository = contatoRepository;
         this.clienteContatoMapeada = clienteContatoMapeada;
     }
+
 
     public ClienteDTO inserirCliente(ClienteDTO clienteDTO) {
 
@@ -92,6 +100,11 @@ public class ClienteService {
         return /*clienteParaClienteDTO*/clienteContatoMapeada.clienteParaClienteDTO(resultadoCliente);
     }
 
+    @CachePut(value = "alterarCliente")
+    @Caching(evict = {
+            @CacheEvict(value = "listarClientesESeusContatos", allEntries = true)/*,
+            @CacheEvict(value = "listarContatosDeClientes", key = "#idCliente")*/
+    })
     public ClienteDTO alterarCliente(ClienteDTO clienteDTO) {
 
         //var novoValor = clienteDTOParaCliente(clienteDTO);
@@ -179,8 +192,7 @@ public class ClienteService {
                         collect(Collectors.toList());*/
         //.
         //collect(Collectors.toList());
-
-        long tempoinicial = System.currentTimeMillis();
+        //long tempoinicial = System.currentTimeMillis();
         var retornaListaClienteContatos = clienteRepository.
                 listarContatosDeCadaCliente(pageable).
                 //stream().
@@ -188,9 +200,10 @@ public class ClienteService {
                 collect(Collectors.toList());*/
                         map(clienteContatoMapeada::clienteParaClienteDTO);
 
-        long tempofinal = System.currentTimeMillis();
+        //long tempofinal = System.currentTimeMillis();
 
-        System.out.printf("Tempo decorrido : %.3f ms %n", (tempofinal - tempoinicial) / 1000d);
+        System.out.println("Contador de cache --->> " + contadorIdentificarCache++);
+        //System.out.printf("Tempo decorrido : %.2f ms %n", (tempofinal - tempoinicial) / 1000d);
 
         return retornaListaClienteContatos;
     }
@@ -201,7 +214,6 @@ public class ClienteService {
         return clienteDTO.clienteParaClienteListDTOContato(resultadoNovo);
     }*/
 
-    @Cacheable(value = "listarContatosDeClientes")
     public List<ClienteDTO> listarContatosDeClientes(Long idCliente) {
 
         return clienteRepository.

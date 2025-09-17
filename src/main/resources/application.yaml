@@ -1,6 +1,12 @@
 server:
   port: 9293
 spring:
+  cache:
+    type: redis
+  data:
+    redis:
+      host: redis
+      port: 6379
   # profiles:
   #  active: dev
   datasource:

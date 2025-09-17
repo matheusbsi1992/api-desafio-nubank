@@ -27,7 +27,7 @@ public class Contato implements Serializable {
     @Column(name = "numero_contato")
     private String numero_contato;
 
-    @ManyToOne//(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cliente")
     /*@JsonIgnore*/
     private Cliente cliente;

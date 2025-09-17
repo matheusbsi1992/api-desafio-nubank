@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,24 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    /*@Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    @GetMapping("visitas")
+    @Operation(summary = "Visitas ao Cache")
+    public String getVisits() {
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String visits = ops.get("listarClientesESeusContatos");
+
+        if (visits == null) {
+            visits = "0";
+        }
+
+        ops.set("listarClientesESeusContatos", String.valueOf(Integer.parseInt(visits) + 1));
+
+        return "Numero de visitas " + visits;
+    }*/
 
 /*
     @GetMapping("returnAll")
@@ -52,6 +72,8 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(identityUpdateScheduling);
     }
 */
+
+
 
     @Operation(summary = "Listar Cliente e Contato")
     @ApiResponsesPadrao
