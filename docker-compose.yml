@@ -49,9 +49,9 @@ services:
     depends_on:
       - postgres
       #- redis
-      #Dependência do DB criada anteriormente
-      #O desafio nao pedi o redis como alto dependencia - redis
-      #condition: service_healthy
+      # Dependencia do DB criada anteriormente
+      # O desafio nao pedi o redis como alto dependencia - redis
+      # condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/api-nubank-desafio
       SPRING_DATASOURCE_USERNAME: postgres
@@ -59,7 +59,7 @@ services:
       SERVER_PORT: 9393
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
-      #SPRING_FLYWAY_SCHEMAS: magalu
+      #SPRING_FLYWAY_SCHEMAS: api-nubank-dados
     ports:
       - "9393:9393"
 volumes: # Adicione esta seção!
